@@ -1,0 +1,25 @@
+<h1><%= @scholarship.title %></h1>
+<div class="well"><%= @scholarship.caption %></div>
+
+<p>
+  <strong>Global:</strong>
+  <%= @scholarship.global ? fa_icon('globe') : fa_icon('minus-circle') %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @scholarship.active ? fa_icon('thumbs-up') : fa_icon('thumbs-down') %>
+</p>
+
+
+<% if current_admin %>
+    <div class="panel panel-danger">
+        <div class="panel-heading">Admin Tools</div>
+        <div class="panel-body">
+            <p>Judged by: <%= @scholarship.judges.map{|j| link_to j.name, j.user}.join(', ').html_safe %></p>
+            <%= link_to "Edit", edit_scholarship_path(@scholarship), :class => 'btn btn-warning' %>
+            <%= link_to "Edit Judges", assign_scholarship_path(@scholarship), :class => 'btn btn-danger' %>
+            <%= link_to "Edit Form", scholarship_sections_path(@scholarship), :class => 'btn btn-info' %>
+        </div>
+    </div>  
+<% end %>

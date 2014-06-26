@@ -1,0 +1,35 @@
+<h1>Editing <%= @field.section.scholarship.title %></h1>
+<h2><%= @field.section.title %></h2>
+
+<div class="well">
+    <h4><%= @field.title %></h4>
+    <% unless @field.caption.empty? %><p><%= @field.caption %></p><% end %>
+    <%= render :partial => 'applications/fields', locals: {f: @field, d: nil} %>
+</div>
+
+<p>
+  <strong>Title:</strong>
+  <%= @field.title %>
+</p>
+
+<p>
+  <strong>Caption:</strong>
+  <%= @field.caption %>
+</p>
+
+<p>
+  <strong>Kind:</strong>
+  <%= @field.kind %>
+</p>
+
+<p>
+  <strong>Config:</strong>
+  <%= @field.config %>
+</p>
+
+<p>
+  <strong>Completed by:</strong>
+  <%= @field.completed_by %>
+</p>
+
+<%= link_to 'Edit', edit_scholarship_section_field_path(@scholarship, @section, @field), :class => 'btn btn-large btn-warning' %>

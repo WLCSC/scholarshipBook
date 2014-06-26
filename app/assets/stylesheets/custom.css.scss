@@ -1,0 +1,68 @@
+#flash-link {
+    background-color: #ddd;
+    color: #888;
+    padding: 6px;
+    border-radius: 12px;
+}
+
+#flash-link.active {
+    color: #3276b1;
+    background-color: #6DC0FF;
+}
+
+form.sign-in-form {
+    display: block;
+    width: 30%;
+    margin: auto;
+
+    input {
+        display: block;
+        width: 100%;
+    }
+    input[type="text"], input[type="password"] {
+        margin-bottom: -1px;
+        font-size: 175%;
+    }
+
+    input[type="submit"] {
+        font-size: 150%;
+        margin-top: 7px;
+    }
+}
+
+.panel {
+    .panel-heading {
+        font-size: 150%;
+        font-weight: bold;
+    }
+}
+
+.has-success {
+    background-color: #e0ffe0;
+}
+
+.has-error {
+    background-color: #ffe0e0;
+}
+
+.nav-pills a {
+    background-color: #FF851B;
+    color: white;
+
+    &:hover {
+        background-color: #ffa52b !important;
+    }
+}
+
+hr {
+    border-color: #bbb;
+}
+
+.big-dashboard-link {
+    text-align: center;
+
+    a {
+        font-size: 24px;
+        font-weight: bold;
+    }
+}

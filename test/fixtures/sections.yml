@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  caption: MyText
+  review_comments: MyText
+  scholarship_id: 1
+
+two:
+  title: MyString
+  caption: MyText
+  review_comments: MyText
+  scholarship_id: 1

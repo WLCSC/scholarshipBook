@@ -1,0 +1,24 @@
+<h1>Applications for <%= @scholarship.title %></h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Applicant</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <% @applications.each do |application| %>
+        <tr>
+            <td><%= application.applicant.user.name %></td>
+            <% if application.status != 180 %>
+                <td><%= application_status application.status %></td> 
+            <% else %>
+                    <td><%= link_to "View Application/Post Data", [application.applicant.user, application], :class => 'btn btn-xs btn-warning' %></td> 
+                <% end %>
+    </tr>
+<% end %>
+    </tbody>
+</table>

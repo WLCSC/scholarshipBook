@@ -1,0 +1,78 @@
+<h1><%= @user.name %></h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading">User Info</div>
+    <div class="panel-body">
+        <p><b>Roles: </b><%= role_labels @user %></p>
+    </div>
+    <div class="panel-footer">
+        <% if @user == current_user || current_admin %>
+            <%= link_to "Update Name/Email/Password", edit_user_path(@user), :class => 'btn btn-xs btn-danger' %>
+        <% end %>
+    </div>
+  </div>
+
+<% if @user.judge? %>
+    <div class="panel panel-warning">
+        <div class="panel-heading">Judge Info</div>
+        <div class="panel-body">
+            <p>Assignments:</p>
+            <%= pills_for @user.judge.scholarships %>
+        </div>
+    </div>
+<% end %>
+
+<% if @user.applicant? %>
+    <div class="panel panel-info">
+        <div class="panel-heading">Applicant Info</div>
+        <div class="panel-body">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Scholarship</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <% @user.applicant.applications.each do |application| %>
+        <tr>
+        <td><%= application.scholarship.title %></td>
+        <% if application.status >= 100 %>
+            <td><%= application_status application.status %></td> 
+    <% else %>
+            <td><%= link_to "View Application", [current_user, application], :class => 'btn btn-xs btn-warning' %></td> 
+    <% end %>
+
+    </tr>
+<% end %>
+    </tbody>
+</table>
+
+        </div>
+    </div>
+<% end %>
+
+
+<% if current_admin && !(@user.admin? && @user.judge && @user.applicant && @user.recommender)%>
+    <div class="panel panel-danger">
+        <div class="panel-heading">User Roles</div>
+        <div class="panel-body">
+                <% unless @user.applicant %>
+                    <%= link_to "Promote to Applicant", promote_user_path(@user, :role => 'Applicant'), :class => 'btn btn-info' %>
+                <% end %>
+                <% unless @user.recommender %>
+                    <%= link_to "Promote to Recommender", promote_user_path(@user, :role => 'Recommender'), :class => 'btn btn-success' %>
+                <% end %>
+                <% unless @user.judge %>
+                    <%= link_to "Promote to Judge", promote_user_path(@user, :role => 'Judge'), :class => 'btn btn-warning' %>
+                <% end %>
+                <% unless @user.admin %>
+                    <%= link_to "Promote to Admin", promote_user_path(@user, :role => 'Admin'), :class => 'btn btn-danger' %>
+                <% end %>
+        </div>
+        <div class="panel-footer">
+        </div>
+    </div>
+<% end %>

@@ -1,0 +1,133 @@
+<% if current_user %>
+    <% if current_admin %>
+        <div id="admin-box" class="panel panel-danger">
+            <div class="panel-heading">Admin Tools</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4 big-dashboard-link">
+                        <%= link_to Scholarship.all.count, scholarships_path %>
+                        <p><%= pluralize_word Scholarship.all.count, 'scholarship' %></p>
+                    </div>
+                    <div class="col-md-4 big-dashboard-link">
+                        <%= link_to User.all.count, users_path %>
+                        <p><%= pluralize_word User.all.count, 'user' %></p>
+                    </div>
+                    <div class="col-md-4 big-dashboard-link">
+                        <%= link_to Application.all.count, scholarships_path %>
+                        <p><%= pluralize_word Application.all.count, 'application' %></p>
+                    </div>
+                </div>
+             </div>
+             <div class="panel-footer">
+                 <%= link_to "Manage Users", users_path, :class => 'btn btn-xs btn-primary' %>
+                 <%= link_to "Manage Scholarships", scholarships_path, :class => 'btn btn-xs btn-info' %>
+             </div>
+        </div>
+    <% end %>
+
+    <% if current_judge %>
+        <div id="judge-box" class="panel panel-warning">
+            <div class="panel-heading">Judge Tools</div>
+            <div class="panel-body">
+                 <div class="row">
+                    <div class="col-md-4 big-dashboard-link">
+                        <%= link_to current_judge.scholarships.count, scholarships_path %>
+                        <p>assigned <%= pluralize_word current_judge.scholarships.count, 'scholarship' %></p>
+                    </div>
+                    <div class="col-md-4 big-dashboard-link">
+                        <%= link_to current_judge.reviews.where('status < 100').count, scholarships_path %>
+                        <p>open <%= pluralize_word User.all.count, 'review' %></p>
+                    </div>
+                    <div class="col-md-4 big-dashboard-link">
+                        <%= link_to Application.all.count, scholarships_path %>
+                        <p><%= pluralize_word Application.all.count, 'application' %></p>
+                    </div>
+                </div>
+           </div>
+            <div class="panel-footer">
+                <%= link_to "Review Applications", scholarships_path, :class => 'btn btn-xs btn-warning' %>
+             </div>
+        </div>
+    <% end %>
+
+    <% if current_recommender %>
+        <div id="recommender-box" class="panel panel-success">
+            <div class="panel-heading">Recommender Tools</div>
+            <div class="panel-body">
+                 <div class="row">
+                    <div class="col-md-6 big-dashboard-link">
+                        <%= link_to current_recommender.invitations.where(:complete => nil).count, invitations_path %>
+                        <p><%= pluralize_word(current_recommender.invitations.where(:complete => nil).count, 'open requests') %></p>
+                    </div>
+                    <div class="col-md-6 big-dashboard-link">
+                     <%= form_tag invitation_apply_path do %>
+                        <h4>Add Invitation Code:</h4>
+                        <%= text_area_tag :token, session[:token] %>
+                        <% session.delete :token %>
+                        <p><%= submit_tag "Accept", :class => 'btn btn-success' %></p>
+                    <% end %>
+                    </div>
+                </div>
+
+                            </div>
+             <div class="panel-footer">
+                <%= link_to "Submit Recommendations", invitations_path, :class => 'btn btn-xs btn-success' %>
+             </div>
+        </div>
+    <% end %>
+
+    <% if current_applicant %>
+        <div id="applicant-box" class="panel panel-info">
+            <div class="panel-heading">Applicant Tools</div>
+            <div class="panel-body">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Scholarship</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <% current_applicant.applications.each do |application| %>
+        <tr>
+        <td><%= application.scholarship.title %></td>
+        <% if application.status >= 100 %>
+            <td><%= application_status application.status %></td> 
+    <% else %>
+            <td><%= link_to "View Application", [current_user, application], :class => 'btn btn-xs btn-warning' %></td> 
+    <% end %>
+
+    </tr>
+<% end %>
+    </tbody>
+</table>
+            </div>
+            <div class="panel-footer">
+                <%= link_to "Apply for Scholarships!", scholarships_path, :class => 'btn btn-xs btn-info' %>
+             </div>
+        </div>
+    <% end %>
+
+    <div id="user-box" class="panel panel-default">
+        <div class="panel-heading">User Tools</div>
+        <div class="panel-body">
+            Stuff!
+        </div>
+        <div class="panel-footer">
+            <%= link_to "Update Name/Email/Password", edit_user_path(current_user), :class => 'btn btn-xs btn-danger' %>
+        </div>
+    </div>
+<% else %>
+    <p class="lead">Welcome to ScholarshipBook! Please <%= link_to "create an account", new_user_path %> or <%= link_to 'sign in', sign_in_path %> to get started.</p>
+    <% if @scholarships.count > 0 %>
+        <h2>Available Scholarships</h2>
+        <% @scholarships.each do |s| %>
+            <div class="panel panel-success">
+                <div class="panel-heading"><%= s.title %></div>
+                <div class="panel-body"><%= s.caption %></div>
+            </div>
+        <% end %>
+    <% end %>
+<% end %>

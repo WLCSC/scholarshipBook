@@ -1,0 +1,36 @@
+<div class="scholarship-input">
+    <div class="panel panel-info scholarship-section">
+        <div class="panel-heading">Recommend <%= @applicant.user.name %> for <%= @field.section.scholarship.title %></div>
+        <div class="panel-body">
+            <h4><%= @field.title %></h4>
+            <%= render :partial => 'applications/fields', locals: {f: @field, d: @datum} %>
+        </div>
+    </div>
+</div>
+
+<%= form_tag invitation_post_path do %>
+<p><b>Warning: </b> You can only submit once!</p>
+<%= hidden_field_tag :invitation_id, @invitation.id %>
+<%= submit_tag "Submit Recommendation", :class =>'btn btn-lg btn-success' %>
+<% end %>
+
+<script>
+$('.scholarship-field').change(function() {
+        id = $(this).attr('id');
+        value = $(this).val();
+        $.post('<%= datum_update_path %>', {id: id, value: value}, function(d) {
+            console.log(d);
+            $('#' + id).addClass('has-success');
+            }).fail(function(e) {
+                $('#' + id).addClass('has-error');
+                console.log('#' + id);
+                console.log(e);
+                });
+        });
+
+$('.scholarship-field').focus(function() {
+        $(this).removeClass('has-success');
+        $(this).removeClass('has-error');
+        });
+</script>
+

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  score: 1
+  notes: MyText
+  review_id: 1
+  section_id: 1
+  status: 1
+
+two:
+  score: 1
+  notes: MyText
+  review_id: 1
+  section_id: 1
+  status: 1

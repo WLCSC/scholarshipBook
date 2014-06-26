@@ -1,0 +1,9 @@
+<% if f.kind == 'text' %>
+    <%= text_field_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''), :class => 'scholarship-field form-control' %>
+<% elsif f.kind == 'textarea' %>
+    <%= text_area_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''),  :class => 'scholarship-field form-control' %>
+<% else %>
+    <%= text_field_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''), :class => 'scholarship-field form-control' %>
+<% end %>
+
+

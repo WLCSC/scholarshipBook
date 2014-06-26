@@ -1,0 +1,19 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Scholarship</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <% @invitations.each do |i| %>
+        <tr>
+            <td><%= i.datum.application.applicant.user.name %></td>
+            <td><%= i.datum.application.scholarship.title %></td>
+            <td><%= link_to "Submit", invitation_submit_path(:invitation_id => i.id), :class => 'btn btn-xs btn-warning' %>
+        </tr>
+    <% end %>
+    </tbody>
+
+</table>

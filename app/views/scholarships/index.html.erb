@@ -1,0 +1,48 @@
+<h1>Listing scholarships</h1>
+
+<% @scholarships.each do |scholarship| %>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <%= scholarship.global ? fa_icon('globe') : '' %> <%= scholarship.active ? '' : fa_icon('ban') %> <%= scholarship.title %>
+        </div>
+
+        <div class="panel-body">
+            <p><%= scholarship.caption %></p>
+        </div>
+
+        <div class="panel-footer">
+            <% if current_user.applicant %>
+                <% if scholarship.active %>
+                    <% if app = current_user.applications.where(:scholarship_id => scholarship.id).take %>
+                        <% if app.status >= 100 %>
+                            <%= application_status app.status %>
+                        <% else %>
+                            <%= link_to "View Application", [current_user, app], :class => 'btn btn-xs btn-warning' %> 
+                        <% end %>
+                    <% else %>
+                        <%= link_to "Apply!", new_user_application_path(current_user, :scholarship_id => scholarship.id), :class => 'btn btn-xs btn-success' %>
+                    <% end %>
+                <% end %>
+            <% end %>
+
+            <% if scholarship.require_admin? && current_user.admin? %>
+                <%= link_to "View Applications", admin_scholarship_path(scholarship), :class => 'btn btn-xs btn-info' %> 
+            <% end %>
+            <% if current_user.judge?  %>
+                <% if scholarship.judges.include?(current_user.judge) %>
+                    <%= link_to "Review Applications", scholarship_reviews_path(scholarship), :class => 'btn btn-xs btn-warning' %>
+                <% end %>
+            <% end %>
+
+            <% if current_user.admin? %>
+                <%= link_to "Edit", edit_scholarship_path(scholarship), :class => 'btn btn-warning btn-xs' %>
+                <%= link_to "Choose Judges", assign_scholarship_path(scholarship), :class => 'btn btn-danger btn-xs' %>
+                <%= link_to "Build Form", scholarship_sections_path(scholarship), :class => 'btn btn-info btn-xs' %>
+            <% end %>
+        </div>
+    </div>
+<% end %>
+
+<% if current_admin %>
+    <%= link_to 'New Scholarship', new_scholarship_path, :class => 'btn btn-lg btn-info' %>
+<% end %>

@@ -1,0 +1,94 @@
+<h1><%= @application.applicant.user.name %>'s Application for <%= @application.scholarship.title %></h1>
+
+<% @application.scholarship.sections.each do |s| %>
+    <div class="panel panel-info scholarship-section">
+    <div class="panel-heading"><%= s.title %></div>
+    <div class="panel-body">
+        <p><%= s.caption %></p>
+        <% s.fields.each do |f| %>
+            <div class="scholarship-input">
+            <h4><%= f.title %></h4>
+            <% d = f.data.where(:application_id => @application.id).first_or_create(:field_id => f.id, :status => 0) %>
+            <% unless f.caption.empty? %><p><%= f.caption %></p><% end %>
+            <% if f.completed_by == 'applicant' %>
+                <% if current_applicant %>
+                <%= render :partial => 'fields', locals: {f: f, d: d} %>
+            <% elsif current_admin %>
+                    <pre><%= d.value %></pre>
+                <% else %>
+                    <div class="well" style="background-color: #888;"> </div>
+        <% end %>
+        <% elsif f.completed_by == 'admin' %>
+                <% if current_admin %>
+                <%= render :partial => 'fields', locals: {f: f, d: d} %>
+            <% elsif current_applicant %>
+                    <p>This will be completed by an administrator.</p>
+                <% else %>
+                    <div class="well" style="background-color: #888;"> </div>
+        <% end %>
+        <% elsif f.completed_by == 'recommender' %>
+                        <% if current_applicant %>
+                            <% if d.invitation && d.invitation.recommender_id %>
+                                <% if d.invitation.complete %>
+                                    <div class="well" style="background-color: #898;"><b>Recommendation from <%= d.invitation.recommender.name %> complete.</b></div>
+                                <% else %>
+                                    <div class="well" style="background-color: #888;">Recommendation accepted by <%= d.invitation.recommender.name %> but incomplete.</div>
+                                <% end %>
+                            <% else %>
+                                <p><b>Invite a Recommender:</b></p>
+                                <%= form_tag invitation_generate_path do %>
+                                    <%= text_field_tag :email %>
+                                    <%= hidden_field_tag :datum_id, d.id %>
+                                    <%= submit_tag "Invite", :class => 'btn btn-mini btn-success' %>
+                                <% end %>
+                            <% end %>
+                        <% else %>
+                            <div class="well" style="background-color: #888;"> </div>
+                        <% end %>
+
+            <% else %>
+                <p>I don't know who's supposed to complete this!</p>
+            <% end %>
+        </div>
+    <% end %>
+    </div>
+</div>
+<% end %>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Submit</div>
+    <div class="panel-body">
+        <p>To finalize your application, select "Complete" from the dropdown below. <b>Warning!</b> Once you have marked your application as complete, there is no way to go back and change anything.</p>
+        <%= form_for [@user, @application] do |f| %>
+            <div class="form-group">
+            <%= f.label :status %>
+            <%= f.select :status, {"Incomplete" => 0, "Complete" => 100}, :class => 'form-control' %>
+        </div>
+
+        <%= f.submit nil, :class => 'btn btn-primary' %>
+    <% end %>
+    </div>
+</div>
+
+
+
+<script>
+$('.scholarship-field').change(function() {
+        id = $(this).attr('id');
+        value = $(this).val();
+        $.post('<%= datum_update_path %>', {id: id, value: value}, function(d) {
+            console.log(d);
+            $('#' + id).addClass('has-success');
+            }).fail(function(e) {
+                $('#' + id).addClass('has-error');
+                console.log('#' + id);
+                console.log(e);
+                });
+        });
+
+$('.scholarship-field').focus(function() {
+        $(this).removeClass('has-success');
+        $(this).removeClass('has-error');
+        });
+</script>
+

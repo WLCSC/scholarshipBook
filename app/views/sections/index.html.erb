@@ -1,0 +1,43 @@
+<h1>Editing <%= @scholarship.title %></h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Caption</th>
+      <th>Review comments</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <% @sections.each do |section| %>
+      <% if section.id %>
+      <tr>
+          <td><b><%= section.title %></b></td>
+        <td><%= section.caption %></td>
+        <td><%= section.review_comments %></td>
+        <td><%= link_to fa_icon('times'), [@scholarship, section], :method => "delete", :class => 'btn btn-danger btn-xs' %>
+      </tr>
+      <% section.fields.each do |field| %>
+          <tr>
+            <td colspan="3"><%= link_to field.title, [@scholarship, section, field] %></td>
+            <td><%= link_to fa_icon('times'), [@scholarship, section, field], :method => "delete", :class => 'btn btn-danger btn-xs' %>
+          </tr>
+      <% end %>
+      <tr>
+          <td><%= link_to "Add a Field", new_scholarship_section_field_path(@scholarship, section), :class => 'btn btn-sm btn-info' %> </td>
+          <td></td>
+          <td></td>
+      </tr>
+  <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<h2>Add a Section</h2>
+<%= render :partial => 'form' %>
+
+

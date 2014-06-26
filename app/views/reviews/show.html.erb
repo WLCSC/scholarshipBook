@@ -1,0 +1,132 @@
+<h1>Reviewing <%= @application.applicant.name %>'s <%= @scholarship.title %> Application </h1>
+
+<% if @global %>
+    <div class="well">
+    <h2>Global Application Info</h2>
+    <% @global_applications.each do |app| %>
+        <hr/>
+        <h3><%= app.scholarship.title %></h3>
+        <% app.scholarship.sections.each do |sec| %>
+            <div class="panel panel-info">
+                <div class="panel-heading"><%= sec.title %></div>
+                <div class="panel-body">
+                    <% sec.fields.each do |f| %>
+                        <div class="review-data">
+                            <h4><%= f.title %></h4>
+                            <p><%= f.caption %></p>
+                            <% d = f.data.where(:application_id => app.id).first_or_create(:field_id => f.id) %>
+                            <div class="well"><%= d.display %></div>
+                        </div>
+                    <% end %>
+
+                </div>
+            </div>
+        <% end %>
+    <% end %>
+</div>
+<% end %>
+
+<% @scores.each do |score| %>
+    <div class="panel panel-info">
+        <div class="panel-heading"><%= score.section.title %></div>
+        <div class="panel-body">
+            <p><%= score.section.caption %></p>
+            <div class="row">
+                <div class="col-md-3">
+                    <p>
+                    Judge Notes:
+                    <div class="well"><%= score.section.review_comments %></div>
+                    </p>
+                    <p>
+                    Score:
+                    <%= select_tag "rid-s#{score.id}-a#{@application.id}-s", options_for_select([0,1,2,3,4,5,6,7,8,9,10].map{|e| [e,e]}, score.score), :class => 'review-field form-control' %>
+                    <p>
+                    Notes:
+                    <%= text_area_tag "rid-s#{score.id}-a#{@application.id}-n", score.notes, :class => 'review-field form-control' %>
+                    </p>
+                </div>
+
+                <div class="col-md-9">
+                    <% score.section.fields.each do |f| %>
+                        <div class="review-data">
+                            <h4><%= f.title %></h4>
+                            <p><%= f.caption %></p>
+                            <% d = f.data.where(:application_id => @application.id).first_or_create(:field_id => f.id) %>
+                            <% if f.completed_by == 'applicant' %>
+                                <div class="well"><%= d.value %></div>
+                            <% elsif f.completed_by == 'admin' %>
+                                <% if current_admin? %>
+                                    <%= render :partial => 'applications/fields', locals: {f: f, d: d} %>
+                                <% else %>
+                                    <div class="well"><%= d.value %></div>
+                                <% end %>
+                            <% elsif f.completed_by == 'recommender' %>
+                                <p>Completed by <%= d.invitation.recommender.user.name %></p>
+                                <div class="well"><%= d.value %></div>
+                        <% else %>
+                        <% end %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+<% end %>
+
+<div class="panel panel-warning">
+    <div class="panel-heading">General Application</div>
+    <div class="panel-body">
+        <%= form_for [@scholarship, @review] do |f| %>
+            <div class="form-group">
+                <%= f.label :notes, "General Notes" %>
+                <%= f.text_area :notes, :class => 'form-control' %>
+            </div>
+
+            <div class="form-group">
+                <%= f.label :status %>
+                <%= f.select :status, {"Incomplete" => 0, "Discard" => 400, "Complete" => 100}, :class => 'form-control' %>
+            </div>
+
+            <%= f.submit nil, :class => 'btn btn-primary' %>
+        <% end %>
+    </div>
+</div>
+
+<script>
+$('.scholarship-field').change(function() {
+        console.log(this);
+        id = $(this).attr('id');
+        value = $(this).val();
+        $.post('<%= datum_update_path %>', {id: id, value: value}, function(d) {
+            console.log(d);
+            $('#' + id).addClass('has-success');
+            }).fail(function(e) {
+                $('#' + id).addClass('has-error');
+                console.log('#' + id);
+                console.log(e);
+                });
+        });
+
+$('.scholarship-field').focus(function() {
+        $(this).removeClass('has-success');
+        $(this).removeClass('has-error');
+        });
+
+$('.review-field').change(function() {
+        console.log(this);
+        id = $(this).attr('id');
+        value = $(this).val();
+        $.post('<%= score_update_path %>', {id: id, value: value}, function(d) {
+            $('#' + id).addClass('has-success');
+            }).fail(function(e) {
+                $('#' + id).addClass('has-error');
+                console.log('#' + id);
+                console.log(e);
+                });
+        });
+
+$('.review-field').focus(function() {
+        $(this).removeClass('has-success');
+        $(this).removeClass('has-error');
+        });
+</script>

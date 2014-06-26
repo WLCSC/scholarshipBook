@@ -1,0 +1,55 @@
+<h1>Listing reviews for <%= @scholarship.title %></h1>
+
+<h2>Reviews You've Started</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Applicant</th>
+      <th>Application Status</th>
+      <th>Review Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reviews.each do |review| %>
+      <tr>
+        <td><%= review.application.applicant.name %></td>
+        <td><%= application_status review.application.status %></td>
+        <td><%= review_status review.status %></td>
+        <td><%= link_to (review.status >= 100 ? "Edit" : "Continue"), [@scholarship,review], :class => 'btn btn-xs btn-warning' %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Unreviewed Applications</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Applicant</th>
+      <th>Application Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @applications.each do |application| %>
+      <tr>
+          <td><%= application.applicant.name %></td>
+          <td><%= application_status application.status %></td>
+          <td><%= form_for [@scholarship, Review.new] do |f| %>
+              <%= f.hidden_field :application_id, value: application.id %>
+              <%= f.submit "Start", :class => 'btn btn-xs btn-success' %>
+          <% end %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<h2>Your Score Matrix</h2>
+<%= render :partial => 'your_matrix' %>
+
+<h2>Overall Score Matrix</h2>
+<%= render :partial => 'overall_matrix' %>

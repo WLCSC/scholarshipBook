@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    </head>
+    <body>
+    <p><%= @applicant.user.name %> has requested that you complete a recommendation form on their behalf. Please go to <%= link_to @url, @url %> to set up an account, if necessary, and complete the recommendation.  If you already have an account, you can also copy &amp; paste the following invitation code:</p>
+
+    <pre><%= @token %></pre>
+
+    <p>Thank you!<br/>WLCSC Scholarship Comittee</p>
+    </body>
+</html>

@@ -1,0 +1,37 @@
+<%= form_for([@scholarship, @section, @field]) do |f| %>
+  <% if @field.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@field.errors.count, "error") %> prohibited this field from being saved:</h2>
+
+      <ul>
+      <% @field.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :caption %><br>
+    <%= f.text_area :caption %>
+  </div>
+  <div class="field">
+    <%= f.label :kind %><br>
+    <%= f.select :kind, {'Long text' => 'textarea', 'Short text' => 'text'} %>
+  </div>
+  <div class="field">
+    <%= f.label :config %><br>
+    <%= f.text_area :config %>
+  </div>
+  <div class="field">
+    <%= f.label :completed_by %><br>
+    <%= f.select :completed_by, {"Applicant" => 'applicant', 'Guidance/Admin' => 'admin', 'Recommender' => 'recommender'} %>
+  </div>
+  <div class="actions">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+  </div>
+<% end %>

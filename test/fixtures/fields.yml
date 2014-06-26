@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  section_id: 1
+  title: MyString
+  caption: MyText
+  type: 
+  config: MyText
+  completed_by: MyString
+
+two:
+  section_id: 1
+  title: MyString
+  caption: MyText
+  type: 
+  config: MyText
+  completed_by: MyString

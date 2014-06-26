@@ -1,0 +1,28 @@
+<table class="table">
+    <thead>
+        <th>Name</th>
+        <th>Average</th>
+        <% @scholarship.sections.each do |section| %>
+            <th><%= section.title %></th>
+        <% end %>
+    </thead>
+
+    <tbody>
+    <% @reviews.each do |review| %>
+        <tr>
+        <td><%= review.application.applicant.name %></td>
+        <td><%= review.scores.average(:score) %></td>
+        <% @scholarship.sections.each do |section| %>
+            <td><%= review.scores.where(:section_id => section.id).first.score %></td>
+        <% end %>
+    </tr>
+<% end %>
+<tr>
+    <td><b>Average</b></td>
+    <td></td>
+    <% @scholarship.sections.each do |section| %>
+        <td><%= section.scores.where(:review_id => @reviews.ids).average(:score) %></td>
+    <% end %>
+</tr>
+    </tbody>
+</table>

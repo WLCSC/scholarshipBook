@@ -1,0 +1,35 @@
+<h1>Listing fields</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Section</th>
+      <th>Title</th>
+      <th>Caption</th>
+      <th>Type</th>
+      <th>Config</th>
+      <th>Completed by</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @fields.each do |field| %>
+      <tr>
+        <td><%= field.section_id %></td>
+        <td><%= field.title %></td>
+        <td><%= field.caption %></td>
+        <td><%= field.type %></td>
+        <td><%= field.config %></td>
+        <td><%= field.completed_by %></td>
+        <td><%= link_to 'Show', field %></td>
+        <td><%= link_to 'Edit', edit_field_path(field) %></td>
+        <td><%= link_to 'Destroy', field, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Field', new_field_path %>

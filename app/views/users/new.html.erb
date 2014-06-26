@@ -1,0 +1,3 @@
+<h1><%= (current_user && current_user.admin?) ? "Create User" : "Sign Up" %></h1>
+
+<%= render 'form' %>

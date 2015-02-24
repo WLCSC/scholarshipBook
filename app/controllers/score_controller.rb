@@ -1,5 +1,5 @@
 class ScoreController < ApplicationController
-    before_action check_for_judge
+    before_action :check_for_judge
   def update
       id = params[:id]
       match = id.match /rid-s(\d+)-a(\d+)-(\w)/

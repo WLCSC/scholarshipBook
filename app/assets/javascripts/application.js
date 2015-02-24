@@ -16,7 +16,7 @@
 //= require custom
 //= require effects
 //= require bootstrap
-//= require jquery.ui.effect.all
+// require jquery.ui.effect.all
 //= require_tree .
 
 

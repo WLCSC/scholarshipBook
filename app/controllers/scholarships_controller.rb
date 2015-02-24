@@ -44,6 +44,7 @@ class ScholarshipsController < ApplicationController
   # PATCH/PUT /scholarships/1.json
   def update
     respond_to do |format|
+        scholarship_params[:judge_ids].delete_if{|x| x.nil? || x.empty?}
       if @scholarship.update(scholarship_params)
         format.html { redirect_to @scholarship, notice: 'Scholarship was successfully updated.' }
         format.json { render :show, status: :ok, location: @scholarship }

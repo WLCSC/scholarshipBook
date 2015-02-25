@@ -1,5 +1,24 @@
 <h1>Reviewing <%= @application.applicant.name %>'s <%= @scholarship.title %> Application </h1>
 
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">Scholarship Requirements</div>
+            <div class="panel-body">
+                <%= simple_format @application.scholarship.requirements %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-warning">
+            <div class="panel-heading">Reviewer Notes</div>
+            <div class="panel-body">
+                <%= simple_format @application.scholarship.notes %>
+            </div>
+        </div>
+    </div>
+</div>
+
 <% if @global %>
     <div class="well">
     <h2>Global Application Info</h2>

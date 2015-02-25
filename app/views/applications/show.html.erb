@@ -1,5 +1,12 @@
 <h1><%= @application.applicant.user.name %>'s Application for <%= @application.scholarship.title %></h1>
 
+<div class="panel panel-success">
+    <div class="panel-heading">Scholarship Requirements</div>
+    <div class="panel-body">
+        <%= simple_format @application.scholarship.requirements %>
+    </div>
+</div>
+
 <% @application.scholarship.sections.each do |s| %>
     <div class="panel panel-info scholarship-section">
     <div class="panel-heading"><%= s.title %></div>

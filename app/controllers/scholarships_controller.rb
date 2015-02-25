@@ -44,7 +44,9 @@ class ScholarshipsController < ApplicationController
   # PATCH/PUT /scholarships/1.json
   def update
     respond_to do |format|
+        if scholarship_params[:judge_ids]
         scholarship_params[:judge_ids].delete_if{|x| x.nil? || x.empty?}
+        end
       if @scholarship.update(scholarship_params)
         format.html { redirect_to @scholarship, notice: 'Scholarship was successfully updated.' }
         format.json { render :show, status: :ok, location: @scholarship }
@@ -83,6 +85,6 @@ class ScholarshipsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def scholarship_params
-      params.require(:scholarship).permit(:title, :caption, :global, :active, {:judge_ids => []})
+      params.require(:scholarship).permit(:title, :caption, :requirements, :notes, :global, :active, {:judge_ids => []})
     end
 end

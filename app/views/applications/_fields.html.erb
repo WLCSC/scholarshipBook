@@ -1,7 +1,10 @@
+<p><b>Please enter your response below:</b></p>
 <% if f.kind == 'text' %>
-    <%= text_field_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''), :class => 'scholarship-field form-control' %>
+    <%= text_field_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''), :class => 'scholarship-field form-control sf-text' %>
 <% elsif f.kind == 'textarea' %>
-    <%= text_area_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''),  :class => 'scholarship-field form-control' %>
+    <%= text_area_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''),  :class => 'scholarship-field form-control sf-textarea' %>
+<% elsif f.kind == "checkbox" %>
+    <%= check_box_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", nil, (d ? d.value : ''), :class => 'scholarship-field form-control sf-checkbox'
 <% else %>
     <%= text_field_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''), :class => 'scholarship-field form-control' %>
 <% end %>

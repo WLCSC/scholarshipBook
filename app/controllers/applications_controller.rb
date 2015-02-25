@@ -59,6 +59,9 @@ class ApplicationsController < ApplicationController
                  d.status = 100
                  d.save
              end
+             target = scholarship_path
+          else
+              target = [@user, @application]
           end
         format.html { redirect_to [@user, @application], notice: 'Application was successfully updated.' }
         format.json { render :show, status: :ok, location: @application }

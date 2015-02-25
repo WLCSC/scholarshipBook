@@ -80,9 +80,10 @@
 
 
 <script>
-$('.scholarship-field').change(function() {
-        id = $(this).attr('id');
-        value = $(this).val();
+
+function updateDatum(dx) {
+        id = $(dx).attr('id');
+        value = $(dx).val();
         $.post('<%= datum_update_path %>', {id: id, value: value}, function(d) {
             console.log(d);
             $('#' + id).addClass('has-success');
@@ -91,6 +92,11 @@ $('.scholarship-field').change(function() {
                 console.log('#' + id);
                 console.log(e);
                 });
+
+}
+
+$('.scholarship-field').change(function() {
+        updateDatum(this);
         });
 
 $('.scholarship-field').focus(function() {

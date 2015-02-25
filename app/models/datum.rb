@@ -9,6 +9,8 @@ class Datum < ActiveRecord::Base
         case field.kind
         when 'text', 'textarea'
             value
+        when 'checkbox'
+            value == 'on' ? "Checked" : "Unchecked"
         else
             value
         end

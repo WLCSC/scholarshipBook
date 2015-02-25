@@ -1,10 +1,90 @@
-<p><b>Please enter your response below:</b></p>
 <% if f.kind == 'text' %>
+<p><b>Please enter your response below:</b></p>
     <%= text_field_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''), :class => 'scholarship-field form-control sf-text' %>
 <% elsif f.kind == 'textarea' %>
+<p><b>Please enter your response below:</b></p>
     <%= text_area_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''),  :class => 'scholarship-field form-control sf-textarea' %>
 <% elsif f.kind == "checkbox" %>
-    <%= check_box_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", nil, (d ? d.value : ''), :class => 'scholarship-field form-control sf-checkbox'
+    <%= check_box_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", nil, (d ? d.value : ''), :class => 'scholarship-field form-control sf-checkbox' %>
+<% elsif f.kind == "eca" %>
+    <p><b>Please enter your activities below.  Make sure to hit "save" when you're done.</b></p>
+    <div style="display: none;" id="ecaTemplate">
+        <div class="row eca-row">
+            <div class="col-md-7">
+                <input class="eca-name" type="text"></input>
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="checkbox" class="eca-9"></input> 9th
+                    </div>
+                    <div class="col-md-3">
+                        <input type="checkbox" class="eca-10"></input> 10th
+                    </div>
+                    <div class="col-md-3">
+                        <input type="checkbox" class="eca-11"></input> 11th
+                    </div>
+                    <div class="col-md-3">
+                        <input type="checkbox" class="eca-12"></input> 12th
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <textarea class="eca-honor"></textarea>
+            </div>
+            <div class="col-md-2">
+                <a class="btn btn-xs btn-danger eca-remove"><%= fa_icon('times') %> Remove</a>
+            </div>
+        </div>
+    </div>
+    <%= hidden_field_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : '') %>
+    <div class="eca-container" id="<%= "ecaContainer-f#{f.id}-d#{d ? d.id : 0}" %>" data-target="#<%= "sfid-f#{f.id}-d#{d ? d.id : 0}" %>">
+        <a class="btn btn-xs btn-info eca-add" data-target="#<%= "ecaContainer-f#{f.id}-d#{d ? d.id : 0}" %>"><%= fa_icon('plus') %> Add</a>
+        <a class="btn btn-xs btn-success eca-save" data-target="#<%= "ecaContainer-f#{f.id}-d#{d ? d.id : 0}" %>"><%= fa_icon('check') %> Save</a>
+        <hr/>
+    </div>
+    <%= javascript_tag do %>
+        $(function() {
+            $('.eca-container').each(function(i, f) {
+                e = $(f);
+                v = $(e.data('target')).val();
+                if(v.length > 2) {
+                $.each(v.split("\n"), function(j, g) {
+                    if(g.length > 0) {
+                        console.log(g);
+                        l = g.split("|");
+                        q = e.append($('#ecaTemplate').html());
+                        q.find('.eca-name').val(l[0]);
+                        q.find('.eca-honor').val(l[2]);
+                    }
+                 });
+               }
+            });  
+        });
+
+        $('.eca-add').click(function() {
+                $($(this).data('target')).append($('#ecaTemplate').html());
+                });
+
+                $('.eca-save').click(function() {
+                    var data = '';
+                    $($(this).parent().data('target')).val('');
+                    $(this).parent().children('.eca-row').each(function(i, f) {
+                        e = $(f);
+                        data += e.find('.eca-name').val() + "|";
+                        if(e.find('.eca-9').is(':checked')) {data += "9,"}
+                        if(e.find('.eca-10').is(':checked')) {data += "10,"}
+                        if(e.find('.eca-11').is(':checked')) {data += "11,"}
+                        if(e.find('.eca-12').is(':checked')) {data += "12,"}
+                        data += "|"
+                        data += e.find('.eca-honor').val() + "\n";
+                    });
+                    $($(this).parent().data('target')).val(data);
+                    updateDatum($($(this).parent().data('target')));
+                });
+
+    $('.eca-container').on('click', '.eca-remove', function() {
+        $(this).parents('.eca-row').remove();
+    });
+    <% end %>
 <% else %>
     <%= text_field_tag "sfid-f#{f.id}-d#{d ? d.id : 0}", (d ? d.value : ''), :class => 'scholarship-field form-control' %>
 <% end %>

@@ -72,16 +72,16 @@
                             <p><%= f.caption %></p>
                             <% d = f.data.where(:application_id => @application.id).first_or_create(:field_id => f.id) %>
                             <% if f.completed_by == 'applicant' %>
-                                <div class="well"><%= d.value %></div>
+                                <div class="well"><%= d.display %></div>
                             <% elsif f.completed_by == 'admin' %>
                                 <% if current_admin? %>
                                     <%= render :partial => 'applications/fields', locals: {f: f, d: d} %>
                                 <% else %>
-                                    <div class="well"><%= d.value %></div>
+                                    <div class="well"><%= d.display %></div>
                                 <% end %>
                             <% elsif f.completed_by == 'recommender' %>
                                 <p>Completed by <%= d.invitation.recommender.user.name %></p>
-                                <div class="well"><%= d.value %></div>
+                                <div class="well"><%= d.display %></div>
                         <% else %>
                         <% end %>
                         </div>

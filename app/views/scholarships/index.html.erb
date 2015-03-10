@@ -1,7 +1,7 @@
 <h1>Listing scholarships</h1>
 
 <% @scholarships.each do |scholarship| %>
-    <div class="panel panel-success">
+    <div class="panel <%= panel_type scholarship %>">
         <div class="panel-heading">
             <%= scholarship.global ? fa_icon('globe') : '' %> <%= scholarship.active ? '' : fa_icon('ban') %> <%= scholarship.title %>
         </div>

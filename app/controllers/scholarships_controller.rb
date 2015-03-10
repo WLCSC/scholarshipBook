@@ -7,7 +7,7 @@ class ScholarshipsController < ApplicationController
   # GET /scholarships
   # GET /scholarships.json
   def index
-    @scholarships = Scholarship.all
+    @scholarships = Scholarship.order(['global DESC', 'title'])
   end
 
   # GET /scholarships/1
@@ -31,7 +31,7 @@ class ScholarshipsController < ApplicationController
 
     respond_to do |format|
       if @scholarship.save
-        format.html { redirect_to @scholarship, notice: 'Scholarship was successfully created.' }
+        format.html { redirect_to scholarships_path, notice: 'Scholarship was successfully created.' }
         format.json { render :show, status: :created, location: @scholarship }
       else
         format.html { render :new }
@@ -48,7 +48,7 @@ class ScholarshipsController < ApplicationController
         scholarship_params[:judge_ids].delete_if{|x| x.nil? || x.empty?}
         end
       if @scholarship.update(scholarship_params)
-        format.html { redirect_to @scholarship, notice: 'Scholarship was successfully updated.' }
+        format.html { redirect_to scholarships_path, notice: 'Scholarship was successfully updated.' }
         format.json { render :show, status: :ok, location: @scholarship }
       else
         format.html { render :edit }

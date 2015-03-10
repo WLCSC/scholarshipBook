@@ -43,7 +43,7 @@
                                 <% end %>
                             <% else %>
                                 <p><b>Invite a Recommender:</b></p>
-                                <%= form_tag invitation_generate_path do %>
+                                <%= form_tag invitation_generate_path, remote: true do %>
                                     <%= text_field_tag :email %>
                                     <%= hidden_field_tag :datum_id, d.id %>
                                     <%= submit_tag "Invite", :class => 'btn btn-mini btn-success' %>

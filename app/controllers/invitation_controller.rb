@@ -6,8 +6,8 @@ class InvitationController < ApplicationController
         @invite = @datum.create_invitation()
         @token = User.generate_token_for(:rec, @datum.id, params[:email])
 
-        #InvitationMailer.send_invitation(@datum, @token, params[:email]).deliver
-        render :text => @token
+        InvitationMailer.send_invitation(@datum.id, @token, params[:email]).deliver
+        render :js=> 'alert("Invitation has been sent!");'
     end
 
     def apply

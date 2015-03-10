@@ -75,4 +75,16 @@ module ApplicationHelper
             '<span class="label label-info">Waiting on Input</span>'
         end.html_safe
     end
+
+    def panel_type scholarship
+        if scholarship.active
+            if scholarship.global
+                'panel-success'
+            else
+                'panel-info'
+            end
+        else
+            'panel-danger'
+        end
+    end
 end

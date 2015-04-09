@@ -7,8 +7,8 @@ class InvitationMailer < ActionMailer::Base
     @scholarship = @datum.field.section.scholarship
     @applicant = @datum.application.applicant
     @token = token
-    @url = 'https://apps.wl.k12.in.us/scholarships/token/' + @token
+    @url = 'https://apps.wl.k12.in.us/scholarships/token?token=' + @token
 
-    mail(to: address, subject: "WLHS Scholarship Recommendation Request").deliver
+    mail(to: address, subject: "WLHS Scholarship Recommendation Request")
   end
 end

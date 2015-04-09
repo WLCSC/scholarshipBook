@@ -52,8 +52,13 @@
                         console.log(g);
                         l = g.split("|");
                         q = e.append($('#ecaTemplate').html());
-                        q.find('.eca-name').val(l[0]);
-                        q.find('.eca-honor').val(l[2]);
+                        p = $('.eca-row:last');
+                        p.find('.eca-name').val(l[0]);
+                        p.find('.eca-honor').val(l[2]);
+                        if(l[1].match('9')) {p.find('.eca-9').attr('checked', true);}
+                        if(l[1].match('10')) {p.find('.eca-10').attr('checked', true);}
+                        if(l[1].match('11')) {p.find('.eca-11').attr('checked', true);}
+                        if(l[1].match('12')) {p.find('.eca-12').attr('checked', true);}
                     }
                  });
                }

@@ -6,7 +6,7 @@
     <body>
     <p><%= @applicant.user.name %> has requested that you complete a recommendation form on their behalf. Please go to the <%= link_to "WLHS Scholarship Application Site", @url %> to set up an account, if necessary, and complete the recommendation.</p>
 
-    <p>If you already have an account, you can also go to the <%= link_to "WLHS Scholarship Application Site", 'https://apps.wl.k12.in.us/scholarships' %> and copy &amp; paste the following invitation code:</p>
+    <p>If you already have an account or if the above link doesn't automatically take you to the recommendation form, you can also go to the <%= link_to "WLHS Scholarship Application Site", 'https://apps.wl.k12.in.us/scholarships' %> and copy &amp; paste the following invitation code:</p>
 
     <pre><%= @token %></pre>
 

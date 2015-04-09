@@ -42,9 +42,9 @@
                                     <div class="well" style="background-color: #888;">Recommendation accepted by <%= d.invitation.recommender.name %> but incomplete.</div>
                                 <% end %>
                             <% else %>
-                                <p><b>Invite a Recommender:</b></p>
+                                <p><b>Send an Email Invitation to a Recommender:</b></p>
                                 <%= form_tag invitation_generate_path, remote: true do %>
-                                    <%= text_field_tag :email %>
+                                    <%= text_field_tag :email, nil, placeholder: 'Email Address' %>
                                     <%= hidden_field_tag :datum_id, d.id %>
                                     <%= submit_tag "Invite", :class => 'btn btn-mini btn-success' %>
                                 <% end %>

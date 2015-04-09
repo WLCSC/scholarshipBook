@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   post 'invitation/generate', :as => 'invitation_generate'
   post 'invitation/apply', :as => 'invitation_apply'
   get 'token/:token' => 'invitation#apply', :as => 'token_apply'
+  get 'token' => 'invitation#apply'
   get 'invitation/submit', :as => 'invitation_submit'
   post 'invitation/submit', :as => 'invitation_post'
   get 'invitations' => 'invitation#index', :as => 'invitations'

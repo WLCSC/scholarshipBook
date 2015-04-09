@@ -37,7 +37,11 @@ class UsersController < ApplicationController
                     if @user == User.first
                         @user.promote_admin if @user == User.first
                     else
-                        @user.promote_applicant unless current_user
+                        if params[:recommender]
+                            @user.promote_recommender
+                        else
+                            @user.promote_applicant
+                        end
                     end
                     session[:user_id] = @user.id unless current_user 
                     format.html { redirect_to root_path, notice: 'User was successfully created.' }

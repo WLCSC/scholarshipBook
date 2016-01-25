@@ -96,4 +96,13 @@ class User < ActiveRecord::Base
             self.create_recommender status: 0
         end
     end
+
+    def roles
+        list = []
+        list << applicant if applicant
+        list << judge if judge
+        list << recommender if recommender
+        list << admin if admin
+        list
+    end
 end

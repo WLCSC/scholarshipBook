@@ -1,9 +1,14 @@
-<div class="alert alert-warning" style="text-align: center;">
-    <span style="font-weight: bold; font-size: 2em;">All applications must be completed by April 9th, 2015 at 4:00 PM!</span>
+<% @messages.each do |message| %>
+    <div class="alert alert-<%= message.status %>" style="text-align: center;">
+    <span style="font-weight: bold; font-size: 1.4em;"><%= message.text %></span>
 </div>
+<% end %>
+
+<div class="row">
 
 <% if current_user %>
     <% if current_admin %>
+        <div class="col-md-6">
         <div id="admin-box" class="panel panel-danger">
             <div class="panel-heading">Admin Tools</div>
             <div class="panel-body">
@@ -23,13 +28,16 @@
                 </div>
              </div>
              <div class="panel-footer">
+                 <%= link_to "Manage Messages", messages_path, :class => 'btn btn-xs btn-danger' %>
                  <%= link_to "Manage Users", users_path, :class => 'btn btn-xs btn-primary' %>
                  <%= link_to "Manage Scholarships", scholarships_path, :class => 'btn btn-xs btn-info' %>
              </div>
-        </div>
+         </div>
+     </div>
     <% end %>
 
     <% if current_judge %>
+        <div class="col-md-6">
         <div id="judge-box" class="panel panel-warning">
             <div class="panel-heading">Judge Tools</div>
             <div class="panel-body">
@@ -52,9 +60,11 @@
                 <%= link_to "Review Applications", scholarships_path, :class => 'btn btn-xs btn-warning' %>
              </div>
         </div>
+        </div>
     <% end %>
 
     <% if current_recommender %>
+        <div class="col-md-6">
         <div id="recommender-box" class="panel panel-success">
             <div class="panel-heading">Recommender Tools</div>
             <div class="panel-body">
@@ -78,9 +88,11 @@
                 <%= link_to "Submit Recommendations", invitations_path, :class => 'btn btn-xs btn-success' %>
              </div>
         </div>
+        </div>
     <% end %>
 
     <% if current_applicant %>
+        <div class="col-md-6">
         <div id="applicant-box" class="panel panel-info">
             <div class="panel-heading">Applicant Tools</div>
             <div class="panel-body">
@@ -112,18 +124,19 @@
                 <%= link_to "Apply for Scholarships!", scholarships_path, :class => 'btn btn-xs btn-info' %>
              </div>
         </div>
+        </div>
     <% end %>
 
+        <div class="col-md-6">
     <div id="user-box" class="panel panel-default">
         <div class="panel-heading">User Tools</div>
         <div class="panel-body">
-            Stuff!
-        </div>
-        <div class="panel-footer">
-            <%= link_to "Update Name/Email/Password", edit_user_path(current_user), :class => 'btn btn-xs btn-danger' %>
+            <%= link_to "Update Name/Email/Password", edit_user_path(current_user), :class => 'btn btn-lg btn-danger' %>
         </div>
     </div>
+        </div>
 <% else %>
+    </div>
     <p class="lead">Welcome to ScholarshipBook! Please <%= link_to "create an account", new_user_path %> or <%= link_to 'sign in', sign_in_path %> to get started.</p>
     <% if @scholarships.count > 0 %>
         <h2>Available Scholarships</h2>

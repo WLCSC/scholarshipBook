@@ -15,6 +15,16 @@
         <td><%= link_to user.name, user %></td>
         <td><%= user.email %></td>
         <td><%= role_labels user %></td>
+        <td>
+            <% if user.applicant %>
+                <% c =  user.applicant.applications.where('status >= 100').count
+                t = user.applicant.applications.count %>
+                <%= c %> / <%= t %>
+                <% if c == t %>
+                    RATIO OK
+                <% end %>
+            <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

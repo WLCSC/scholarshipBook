@@ -13,11 +13,8 @@
     <% @applications.each do |application| %>
         <tr>
             <td><%= application.applicant.user.name %></td>
-            <% if application.status != 180 %>
                 <td><%= application_status application.status %></td> 
-            <% else %>
                     <td><%= link_to "View Application/Post Data", [application.applicant.user, application], :class => 'btn btn-xs btn-warning' %></td> 
-                <% end %>
     </tr>
 <% end %>
     </tbody>

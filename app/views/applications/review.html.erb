@@ -1,4 +1,8 @@
-<h1><%= @application.applicant.user.name %>'s Application for <%= @application.scholarship.title %></h1>
+<h1>Reviewing <%= @application.applicant.user.name %>'s Application for <%= @application.scholarship.title %></h1>
+
+<% if current_applicant %>
+    <p>Please review your submission before submitting.</p>
+<% end %>
 
 <div class="panel panel-success">
     <div class="panel-heading">Scholarship Requirements</div>
@@ -18,21 +22,9 @@
             <% d = f.data.where(:application_id => @application.id).first_or_create(:field_id => f.id, :status => 0) %>
             <% unless f.caption.empty? %><p><%= f.caption %></p><% end %>
             <% if f.completed_by == 'applicant' %>
-                <% if current_applicant %>
-                <%= render :partial => 'fields', locals: {f: f, d: d} %>
-            <% elsif current_admin %>
-                    <pre><%= d.value %></pre>
-                <% else %>
-                    <div class="well" style="background-color: #888;"> </div>
-        <% end %>
+                    <pre><%= d.display %></pre>
         <% elsif f.completed_by == 'admin' %>
-                <% if current_admin %>
-                <%= render :partial => 'fields', locals: {f: f, d: d} %>
-            <% elsif current_applicant %>
                     <p>This will be completed by an administrator.</p>
-                <% else %>
-                    <div class="well" style="background-color: #888;"> </div>
-        <% end %>
         <% elsif f.completed_by == 'recommender' %>
                         <% if current_applicant || current_admin %>
                             <% if d.invitation && d.invitation.recommender_id %>
@@ -42,24 +34,14 @@
                                     <div class="well" style="background-color: #888;">Recommendation accepted by <%= d.invitation.recommender.name %> but incomplete.</div>
                                 <% end %>
                             <% else %>
-                                <p><b>Send an Email Invitation to a Recommender:</b></p>
-                                <%= form_tag invitation_generate_path, remote: true do %>
-                                    <%= text_field_tag :email, nil, placeholder: 'Email Address' %>
-                                    <%= hidden_field_tag :datum_id, d.id %>
-                                    <%= submit_tag "Invite", :class => 'btn btn-mini btn-success' %>
-                                <% end %>
+                                    <div class="well" style="background-color: #988;">No Recommender invited!</div>
                             <% end %>
-                        <% else %>
-                                <% if d.invitation.complete %>
-                                    <div class="well" style="background-color: #898;"><b>Recommendation from <%= d.invitation.recommender.name %> complete.</b></div>
-                                <% else %>
-                                    <div class="well" style="background-color: #888;">Recommendation accepted by <%= d.invitation.recommender.name %> but incomplete.</div>
-                                <% end %>
                         <% end %>
 
             <% else %>
                 <p>I don't know who's supposed to complete this!</p>
             <% end %>
+
         </div>
     <% end %>
     </div>
@@ -69,7 +51,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading">Submit</div>
     <div class="panel-body">
-        <p>To review &amp; finalize your application, select "Continue to Review" from the dropdown below.</p>
+        <p>If you need to make any changes to your information, use the back button in your browser or choose "Go Back" from the dropdown below.  To submit your application, select "Complete" from the dropdown below. <b>Warning!</b> Once you have marked your application as complete, there is no way to go back and change your responses.  Recommenders can still submit their recommendations after you've completed your application.</p>
         <%= form_for [@user, @application] do |f| %>
             <div class="form-group">
             <%= f.label :status %>

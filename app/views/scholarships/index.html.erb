@@ -1,4 +1,4 @@
-<h1>Listing scholarships</h1>
+<h1>Scholarships</h1>
 
 <% @scholarships.each do |scholarship| %>
     <div class="panel <%= panel_type scholarship %>">
@@ -24,7 +24,7 @@
                 <% if scholarship.active %>
                     <% if app = current_user.applications.where(:scholarship_id => scholarship.id).take %>
                         <% if app.status >= 100 %>
-                            <%= application_status app.status %>
+                            <%= link_to "Review Application", review_user_application_path(current_user, app), :class => 'btn btn-xs btn-success' %> 
                         <% else %>
                             <%= link_to "View Application", [current_user, app], :class => 'btn btn-xs btn-warning' %> 
                         <% end %>
@@ -45,6 +45,7 @@
 
             <% if current_user.admin? %>
                 <%= link_to "Edit", edit_scholarship_path(scholarship), :class => 'btn btn-danger btn-xs' %>
+                <%= link_to "DELETE", scholarship, method: :delete, class: 'btn btn-danger btn-xs', data: {confirm: "Are you sure you want to delete #{scholarship.title}?"} %>
                 <%= link_to "Choose Judges", assign_scholarship_path(scholarship), :class => 'btn btn-danger btn-xs' %>
                 <%= link_to "Build Form", scholarship_sections_path(scholarship), :class => 'btn btn-info btn-xs' %>
             <% end %>

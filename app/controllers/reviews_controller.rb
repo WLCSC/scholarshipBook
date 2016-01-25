@@ -11,6 +11,11 @@ class ReviewsController < ApplicationController
     @applications = @scholarship.applications.where.not(:id => @started_ids)
   end
 
+  def print
+    @applications = @scholarship.applications.where.not(:id => @started_ids)
+    @global = true
+  end
+
   # GET /reviews/1
   # GET /reviews/1.json
   def show

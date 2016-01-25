@@ -23,6 +23,7 @@
     <div class="well">
     <h2>Global Application Info</h2>
     <% @global_applications.each do |app| %>
+        <% unless app == @application %>
         <hr/>
         <h3><%= app.scholarship.title %></h3>
         <% app.scholarship.sections.each do |sec| %>
@@ -40,6 +41,7 @@
 
                 </div>
             </div>
+        <% end %>
         <% end %>
     <% end %>
 </div>
@@ -74,14 +76,22 @@
                             <% if f.completed_by == 'applicant' %>
                                 <div class="well"><%= d.display %></div>
                             <% elsif f.completed_by == 'admin' %>
-                                <% if current_admin? %>
+                                <% if current_admin %>
                                     <%= render :partial => 'applications/fields', locals: {f: f, d: d} %>
                                 <% else %>
                                     <div class="well"><%= d.display %></div>
                                 <% end %>
                             <% elsif f.completed_by == 'recommender' %>
-                                <p>Completed by <%= d.invitation.recommender.user.name %></p>
-                                <div class="well"><%= d.display %></div>
+                                <% if d.invitation %>
+                                  <% if d.invitation.recommender %>
+                                    <p>Completed by <%= d.invitation.recommender.user.name %></p>
+                                    <div class="well"><%= d.display %></div>
+                                  <% else %>
+                                    <div class="well" style="background-color: #888;">Waiting on recommendation.</div>
+                                  <% end %>
+                              <% else %>
+                                    <div class="well" style="background-color: #b87;">No accepted invitations.</div>
+                            <% end %>
                         <% else %>
                         <% end %>
                         </div>

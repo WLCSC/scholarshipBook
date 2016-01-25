@@ -12,16 +12,22 @@
   </thead>
 
   <tbody>
-    <% @reviews.each do |review| %>
-      <tr>
+  <% @reviews.sort{|a,b| a.application.applicant.name <=> b.application.applicant.name}.each do |review| %>
+        <tr>
+            <% begin %>
         <td><%= review.application.applicant.name %></td>
         <td><%= application_status review.application.status %></td>
         <td><%= review_status review.status %></td>
         <td><%= link_to (review.status >= 100 ? "Edit" : "Continue"), [@scholarship,review], :class => 'btn btn-xs btn-warning' %>
+    <% rescue => ex %>
+        <td><pre><%= review.id %> - <%= ex.inspect %></pre></td>
+    <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<p><%= link_to "Print Copies of all Applications", print_scholarship_reviews_path(@scholarship), class: 'btn btn-xlarge btn-info' %></p>
 
 <h2>Unreviewed Applications</h2>
 <table class="table">
@@ -34,14 +40,18 @@
   </thead>
 
   <tbody>
-    <% @applications.each do |application| %>
+  <% @applications.sort{|a,b| a.applicant.name <=> b.applicant.name}.each do |application| %>
       <tr>
+            <% begin %>
           <td><%= application.applicant.name %></td>
           <td><%= application_status application.status %></td>
           <td><%= form_for [@scholarship, Review.new] do |f| %>
               <%= f.hidden_field :application_id, value: application.id %>
               <%= f.submit "Start", :class => 'btn btn-xs btn-success' %>
           <% end %></td>
+    <% rescue => ex %>
+        <td><pre><%= application.id %> - <%= ex.inspect %></pre></td>
+    <% end %>
       </tr>
     <% end %>
   </tbody>

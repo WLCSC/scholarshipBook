@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :messages
+
   post 'invitation/generate', :as => 'invitation_generate'
   post 'invitation/apply', :as => 'invitation_apply'
   get 'token/:token' => 'invitation#apply', :as => 'token_apply'
@@ -20,14 +22,18 @@ Rails.application.routes.draw do
         resources :sections do
             resources :fields
         end
-        resources :reviews
+        resources :reviews do
+            get 'print', on: :collection
+        end
     end
 
     resources :users do
         member do
             get 'promote'
         end
-        resources :applications
+        resources :applications do
+            get 'review', on: :member
+        end
     end
 
     get "sign-in" => 'sessions#new', :as => 'sign_in'

@@ -6,6 +6,10 @@ class Application < ActiveRecord::Base
     has_many :scores, through: :reviews
     before_save :verify_status
 
+    def sections
+        scholarship.sections
+    end
+
     def verify_status
         if scholarship.require_third_party?
             if status == 100

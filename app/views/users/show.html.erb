@@ -40,7 +40,10 @@
         <tr>
         <td><%= application.scholarship.title %></td>
         <% if application.status >= 100 %>
-            <td><%= application_status application.status %></td> 
+            <% if current_admin %>
+            <td><%= link_to "View Complete Application", [current_user, application], :class => 'btn btn-xs btn-success' %></td> 
+            <% end %>
+                <td><%= application_status application.status %></td> 
     <% else %>
             <td><%= link_to "View Application", [current_user, application], :class => 'btn btn-xs btn-warning' %></td> 
     <% end %>

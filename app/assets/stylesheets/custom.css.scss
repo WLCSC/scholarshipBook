@@ -10,6 +10,15 @@
     background-color: #6DC0FF;
 }
 
+.review-data label {
+    margin-top: 5px;
+    margin-bottom: 1px;
+}
+
+.label-checkbox {
+    display: block;
+}
+
 form.sign-in-form {
     display: block;
     width: 30%;
@@ -87,3 +96,105 @@ textarea {
         display: block;
     }
 }
+
+.ban {
+    color: #a94442;
+}
+
+@media print {
+    .printable {
+        .p-scholarship {
+            page-break-after: always;
+            font-size: 12px;
+
+            h1 {
+                font-size: 18px;
+                margin-top: 0px;
+                margin-bottom: 4px;
+            }
+
+            h2 {
+                font-size: 16px;
+                margin-top: 0px;
+                margin-bottom: 4px;
+            }
+
+            h3 {
+                font-size: 14px;
+                margin-top: 0px;
+                margin-bottom: 4px;
+            }
+
+            h4 {
+                display: inline;
+                font-size: 12px;
+                margin-top: 0px;
+                margin-bottom: 4px;
+            }
+
+            label {
+                float: left;
+                font-weight: bold;
+                margin-right: 2em;
+                margin-left: 0.5em;
+            }
+
+            pre {
+                font-size: 12px;
+                padding: 0;
+                background: none;
+                border: none;
+                line-height: 0.9;
+            }
+
+            .datum {
+                page-break-inside: avoid;
+            }
+
+            label + .datum-textarea {
+                color: blue;
+                display: block;
+                float: none;
+            }
+
+            .datum-textarea {
+                display: block;
+            }
+
+            .review-data {
+                clear: both;
+                margin-bottom: 6px;
+            }
+        }
+
+        .panel {
+            page-break-inside: avoid;
+            border: 2px solid #333;
+        }
+
+        .panel-body {
+            padding: 2px;
+        }
+
+        .p-coverpage {
+            page-break-after: always;
+
+            h1 {
+                text-align: center;
+            }
+
+            td {
+                width: 50%;
+            }
+        }
+    }
+}
+
+pre {
+        white-space: pre-wrap;       /* CSS 3 */
+        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+        white-space: -pre-wrap;      /* Opera 4-6 */
+        white-space: -o-pre-wrap;    /* Opera 7 */
+        word-wrap: break-word;       /* Internet Explorer 5.5+ */
+        word-break: normal;
+ }

@@ -22,19 +22,21 @@
     </div>
 
     <div class="form-group">
-        <label>Password</label>
+        <label>Change Password</label>
         <%= f.password_field :password, :class => 'form-control' %>
     </div>
 
     <div class="form-group">
-        <label>Confirm Password</label>
+        <label>Confirm Password Change</label>
         <%= f.password_field :password_confirmation, :class => 'form-control' %>
     </div>
 
+    <% unless @user.id %>
     <div class="form-group">
         <label>Check this box if you're a recommender.</label>
         <%= f.check_box :recommender %>
     </div>
+<% end %>
 
     <div class="actions">
         <%= f.submit :class => 'btn btn-success' %>

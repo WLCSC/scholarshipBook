@@ -56,6 +56,8 @@ module ApplicationHelper
             '<span class="label label-danger">Discard</span>'
         when 80
             '<span class="label label-info">Waiting on 3rd Party</span>'
+        when 90
+            '<span class="label label-info">Waiting on Confirmation</span>'
         when 180
             '<span class="label label-info">Complete - Waiting on 3rd Party</span>'
         else

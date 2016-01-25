@@ -8,11 +8,17 @@ class Datum < ActiveRecord::Base
     def display
         case field.kind
         when 'text', 'textarea'
-            value
+            value.to_s
         when 'checkbox'
             value == 'on' ? "Checked" : "Unchecked"
+        when 'eca'
+            '<pre>' + value.to_s.gsub("|", "\t").gsub("\n", "\n\n") + '</pre>'
         else
-            value
-        end
+            value.to_s
+        end.html_safe
+    end
+
+    def kind
+        field.kind
     end
 end

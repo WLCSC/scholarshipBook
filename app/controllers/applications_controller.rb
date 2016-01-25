@@ -1,7 +1,7 @@
 class ApplicationsController < ApplicationController
-  before_action :set_application, only: [:show, :edit, :update, :destroy]
+  before_action :set_application, only: [:show, :edit, :update, :destroy, :review]
   before_action :set_user
-  before_action :check_for_applicant_or_admin, except: [:show, :update]
+  before_action :check_for_applicant_or_admin, except: [:show, :update, :review]
 
   # GET /applications
   # GET /applications.json
@@ -13,11 +13,23 @@ class ApplicationsController < ApplicationController
   # GET /applications/1.json
   def show
       redirect_to scholarships_path if @application.status >= 100 && !current_admin
+      if current_admin
+        @statusList = {"Incomplete" => 0, "Complete" => 100, "Discard" => 400}
+      else
+        @statusList = {"Incomplete" => 0, "Continue to Review" => 90}
+      end
+  end
+
+  def review 
+      @statusList = {"Go Back" => 0, "Complete" => 100}
   end
 
   # GET /applications/new
   def new
     @scholarship = Scholarship.find(params[:scholarship_id])
+    if @application = Application.where(:applicant_id => @user.applicant.id, :scholarship_id => @scholarship.id)
+        redirect_to [@user, @application]
+    else
     if @scholarship && @scholarship.active
         @application = Application.create(:applicant_id => @user.applicant.id, :scholarship_id => @scholarship.id, :status => 0)
         @scholarship.fields.each do |f|
@@ -26,6 +38,7 @@ class ApplicationsController < ApplicationController
         redirect_to [@user, @application]
     else
         redirect_to scholarships_path, :notice => 'That is not an active scholarship.'
+    end
     end
   end
 
@@ -54,16 +67,22 @@ class ApplicationsController < ApplicationController
   def update
     respond_to do |format|
       if @application.update(application_params)
-          if application_params[:status] == 100
+          if @application.status == 100
              @application.first_party_data.each do |d|
                  d.status = 100
                  d.save
              end
-             target = scholarship_path
+             target = scholarships_path
+          elsif @application.status == 90
+             @application.first_party_data.each do |d|
+                 d.status = 100
+                 d.save
+             end
+              target = review_user_application_path(@user, @application)
           else
               target = [@user, @application]
           end
-        format.html { redirect_to [@user, @application], notice: 'Application was successfully updated.' }
+        format.html { redirect_to target, notice: 'Application was successfully updated.' }
         format.json { render :show, status: :ok, location: @application }
       else
         format.html { render :edit }

@@ -1,0 +1,80 @@
+<div class="printable">
+    <div class="p-coverpage">
+        <h1>Applications for <%= @scholarship.title %></h1>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">Scholarship Requirements</div>
+            <div class="panel-body">
+                <%= simple_format @scholarship.requirements %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-warning">
+            <div class="panel-heading">Reviewer Notes</div>
+            <div class="panel-body">
+                <%= simple_format @scholarship.notes %>
+            </div>
+        </div>
+    </div>
+</div>
+<h3><%= @applications.count %> applications:</h3>
+<table class="table table-bordered">
+    <% @applications.sort{|a,b| a.applicant.name <=> b.applicant.name}.in_groups_of(4) do |group| %>
+        <tr>
+            <% group.each do |app| %>
+            <td><%= app.applicant.name if app %></td>
+        <% end %>
+        </tr>
+    <% end %>
+</table>
+
+    </div>
+<% @applications.sort{|a,b| a.applicant.name <=> b.applicant.name}.each do |application| %>
+
+    <div class="p-scholarship">
+<h1><%= application.applicant.name %>'s <%= @scholarship.title %> Application </h1>
+
+<% if @global %>
+    <% @global_applications = application.applicant.applications.to_a.keep_if{|a| a.scholarship.global} %>
+    <% @global_applications.each do |app| %>
+        <% unless app == application %>
+        <% app.scholarship.sections.each do |sec| %>
+            <div class="panel panel-info">
+                <div class="panel-heading"><%= sec.title %></div>
+                <div class="panel-body">
+                    <% sec.fields.each do |f| %>
+                        <div class="review-data">
+                            <label><%= f.title %> <%= !f.caption.empty? ? "[#{f.caption}]" : '' %></label>
+                            <% d = f.data.where(:application_id => app.id).first_or_create(:field_id => f.id) %>
+                            <div class="datum datum-<%= d.kind %>"><%= d.display %></div>
+                        </div>
+                    <% end %>
+
+                </div>
+            </div>
+        <% end %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<% application.sections.each do |section| %>
+    <div class="panel panel-info">
+        <div class="panel-heading"><%= section.title %></div>
+        <div class="panel-body">
+            <p><%= section.caption %></p>
+                    <% section.fields.each do |f| %>
+                        <div class="review-data">
+                            <label><%= f.title %> <%= !f.caption.empty? ? "[#{f.caption}]" : '' %></label>
+                            <% d = f.data.where(:application_id => application.id).first_or_create(:field_id => f.id) %>
+                            <div class="datum datum-<%= d.kind %>"><%= d.display %></div>
+                        </div>
+                    <% end %>
+        </div>
+    </div>
+<% end %>
+
+</div>
+<% end %>
+</div>

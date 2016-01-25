@@ -4,6 +4,10 @@ class Applicant < ActiveRecord::Base
     has_many :scholarships, through: :applications
 
     def name
-        user.name
+        begin 
+            user.name 
+        rescue
+            id.to_s
+        end
     end
 end

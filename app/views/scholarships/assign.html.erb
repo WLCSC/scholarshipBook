@@ -1,7 +1,11 @@
 <h1>Judges for <%= @scholarship.title %></h1>
 
 <%= form_for @scholarship do |f| %>
-    <%= collection_check_boxes :scholarship, :judge_ids, Judge.all, :id, :name %>
+    <%= collection_check_boxes :scholarship, :judge_ids, Judge.all, :id, :name do |b| %>
+        <%= b.label class: "label-checkbox" do %>
+            <%= b.check_box %> <%= b.text %>
+        <% end %>
+    <% end %>
 
     <br/>
     <%= f.submit nil, :class => 'btn btn-primary' %>

@@ -4,16 +4,36 @@
         <th>Average</th>
         <% @scholarship.sections.each do |section| %>
             <th><%= section.title %></th>
+            <th><%= section.title %> Notes</th>
         <% end %>
+        <th>Overall Notes</th>
     </thead>
 
     <tbody>
     <% @scholarship.applications.each do |app| %>
         <tr>
-        <td><%= app.applicant.name %></td>
+            <% begin %>
+                <td><%= app.applicant.name %> <%= (fa_icon("ban", class: 'ban') * app.reviews.where(:status => 400).count).html_safe %></td>
         <td><%= app.scores.average(:score) %></td>
         <% @scholarship.sections.each do |section| %>
             <td><%= app.scores.where(:section_id => section.id).average(:score) %></td>
+            <td>
+                <% app.scores.each do |sc| %>
+                    <% if sc.notes && !sc.notes.empty? %>
+                        <p><%= sc.notes %> <i> - <%= sc.review.judge.user.name %></i></p>
+                    <% end %>
+                <% end %>
+            </td>
+        <% end %>
+        <td>
+            <% app.reviews.each do |r| %>
+                    <% if r.notes && !r.notes.empty? %>
+                        <p><%= r.notes %> <i> - <%= r.judge.user.name %></i></p>
+                    <% end %>
+            <% end %>
+        </td>
+    <% rescue => exc %>
+        <td><pre><%= app.id %> - <%= exc.inspect %></pre></td>
         <% end %>
     </tr>
 <% end %>

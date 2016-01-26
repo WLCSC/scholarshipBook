@@ -21,6 +21,9 @@ namespace :cleanup do
         Assignment.all.each do |a|
             a.delete
         end
+        Invitation.all.each do |i|
+            i.delete
+        end
     end
 
     task :open => :environment do

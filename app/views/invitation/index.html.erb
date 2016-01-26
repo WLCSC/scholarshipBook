@@ -9,9 +9,16 @@
     <tbody>
     <% @invitations.each do |i| %>
         <tr>
-            <td><%= i.datum.application.applicant.user.name %></td>
-            <td><%= i.datum.application.scholarship.title %></td>
-            <td><%= link_to "Submit", invitation_submit_path(:invitation_id => i.id), :class => 'btn btn-xs btn-warning' %>
+            <td><%= i.datum ? i.datum.application.applicant.user.name : "ERR" %></td>
+            <td><%= i.datum ? i.datum.application.scholarship.title : "ERR" %></td>
+            <% if current_admin %>
+                <td>
+                    <%= i.complete ? "Done" : "Not Done" %>
+                </td>
+            <% end %>
+            <% if current_recommender && i.recommender_id == current_recommender.id %>
+                <td><%= link_to "Submit", invitation_submit_path(:invitation_id => i.id), :class => 'btn btn-xs btn-warning' %>
+            <% end %>
         </tr>
     <% end %>
     </tbody>

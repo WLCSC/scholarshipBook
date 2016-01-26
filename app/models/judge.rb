@@ -5,6 +5,6 @@ class Judge < ActiveRecord::Base
     has_many :scholarships, through: :assignments
 
     def name
-        user.name
+        user ? user.name : id
     end
 end

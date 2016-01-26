@@ -46,6 +46,25 @@ module ApplicationHelper
         end
     end
 
+    def application_status_color code
+        case code
+        when 100
+            'success'
+        when 0
+            'warning'
+        when 400
+            'danger'
+        when 80
+            'info'
+        when 90
+            'info'
+        when 180
+            'info'
+        else
+            'default'
+        end
+    end
+
     def application_status code
         case code
         when 100

@@ -17,9 +17,11 @@
         <td><%= role_labels user %></td>
         <td>
             <% if user.applicant %>
+                <% user.applicant.applications.each do |a| %>
+                    <span class="label label-<%= application_status_color a.status %>">&nbsp;</span>
+                <% end %>
                 <% c =  user.applicant.applications.where('status >= 100').count
                 t = user.applicant.applications.count %>
-                <%= c %> / <%= t %>
                 <% if c == t %>
                     RATIO OK
                 <% end %>

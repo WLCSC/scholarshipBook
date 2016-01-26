@@ -5,6 +5,7 @@ class Application < ActiveRecord::Base
     has_many :reviews
     has_many :scores, through: :reviews
     before_save :verify_status
+    validates :applicant_id, uniqueness: {scope: :scholarship_id, message: 'already has an application open for this scholarship'}
 
     def sections
         scholarship.sections

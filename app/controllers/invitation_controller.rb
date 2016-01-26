@@ -47,7 +47,11 @@ class InvitationController < ApplicationController
     end
 
     def index
-        @invitations = current_recommender.invitations.where(:complete => nil)
+        if current_admin
+            @invitations = Invitation.all
+        else
+            @invitations = current_recommender.invitations.where(:complete => nil)
+        end
     end
 
     def submit

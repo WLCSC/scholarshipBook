@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
-    has_one :admin
-    has_one :applicant
+    has_one :admin, dependent: :destroy
+    has_one :applicant, dependent: :destroy
     has_many :applications, through: :applicant
-    has_one :judge
-    has_one :recommender
+    has_one :judge. dependent: :destroy
+    has_one :recommender, dependent: :destroy
 
     has_secure_password
     validates :email, uniqueness: true
